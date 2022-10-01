@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+      <h3>Create Transfer</h3>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form>
+  <ion-card>
+      <ion-item>
+        <ion-label position="floating">Account holder</ion-label>
+        <ion-input name="account_holder" [(ngModel)]="form.account_holder" [autofocus]="true"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">IBAN</ion-label>
+        <ion-input name="iban" [(ngModel)]="form.iban"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Date</ion-label>
+        <ion-input name="date" [(ngModel)]="form.date"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Amount</ion-label>
+        <ion-input name="amount" [(ngModel)]="form.amount"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Note</ion-label>
+        <ion-textarea name="note" [(ngModel)]="form.note"></ion-textarea>
+      </ion-item>
+    </ion-card>
+    
+    <div class="ion-margin">
+      <ion-button expand="full" (click)="submitForm()">Create</ion-button>
+    </div>
+  </form>
+</ion-content>

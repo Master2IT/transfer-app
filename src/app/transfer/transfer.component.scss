@@ -1,0 +1,9 @@
+.row{
+    border-bottom: 2px solid rgb(231, 231, 231);
+    &:last-child{
+        border: none;
+    }
+}
+.ion-bold{
+    font-weight: bold;
+}
