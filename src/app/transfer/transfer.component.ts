@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TransferService } from './transfer.service';
+import { ToastController } from '@ionic/angular';
+import Transfer from './transfer.interface';
+import { Router, Event, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-transfer',
@@ -8,17 +11,54 @@ import { TransferService } from './transfer.service';
 })
 export class TransferComponent implements OnInit {
 
-  constructor(private data: TransferService) {}
+  transfers: Transfer[] = []
+  currentRoute: string
 
-  ngOnInit(): void {
+  public headers: Array<string> = [
+    'Account holder',
+    'IBAN',
+    'Date',
+    'Amount',
+    'Note',
+  ];
+
+  constructor(private transferService: TransferService, private toastController: ToastController, private router: Router) {
+    this.currentRoute = ""
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd) {
+        // Hide progress spinner or progress bar
+        this.currentRoute = event.url;          
+        if(this.currentRoute == '/home') this.getAll()
+      }
+
+    })
+   }
+
+  ngOnInit(): void {}
+
+  onShowToast({message, color}: any){
+    this.showToast(message, color)
   }
 
-  getHeaders() {
-    return this.data.getHeaders();
+  async showToast(message: string, color: string) {
+    if (!message) return;
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 3000,
+      position: 'bottom',
+      color
+    });
+
+    await toast.present();
   }
 
-  getTransfers() {
-    return this.data.getTransfers();
+  getAll() {
+    this.transferService.findAll().subscribe((res: any) => {  
+      this.transfers = res.data
+    }, (err) => {
+      this.showToast(err.error.message, 'danger')
+      console.log(err);
+    });
   }
 
 }

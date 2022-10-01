@@ -2,38 +2,15 @@
     <ion-grid>
       <ion-row class="row">
         <ion-col size="2"
-          *ngFor="let header of getHeaders()">
+          *ngFor="let header of headers;">
           <h6 class="ion-bold">{{header}}</h6>
         </ion-col>
         <ion-col class="ion-text-center" size="2">
           <h6>-</h6>
         </ion-col>
       </ion-row>
-      <ion-row class="row" *ngFor="let transfer of getTransfers()">
-        <ion-col>
-          <div>{{transfer.account_holder}}</div>
-        </ion-col>
-        <ion-col>
-          <div>{{transfer.iban}}</div>
-        </ion-col>
-        <ion-col>
-          <div>{{transfer.date}}</div>
-        </ion-col>
-        <ion-col>
-          <div>{{transfer.amount}}</div>
-        </ion-col>
-        <ion-col>
-          <div>{{transfer.note}}</div>
-        </ion-col>
-        <!-- Options -->
-        <ion-col class="col ion-text-center" size="2">
-          <ion-button size="small" color="medium" [routerLink]="'/transfer/edit/' + transfer.id">
-            <ion-icon name="create-outline"></ion-icon>
-          </ion-button>
-          <ion-button color="danger" size="small">
-            <ion-icon name="trash-outline"></ion-icon>
-          </ion-button>
-        </ion-col>
-      </ion-row>
+      <div class="row" *ngFor="let transfer of transfers; let i = index">
+        <app-transfer-item (getAll)="getAll()" (showToast)="onShowToast($event)" item-key="i" [transfer]="transfer"></app-transfer-item>
+      </div>
     </ion-grid>
   </ion-card>

@@ -1,0 +1,44 @@
+<ion-row *ngIf="transfer">
+  <ion-col>
+    <div>{{transfer.account_holder}}</div>
+  </ion-col>
+  <ion-col size="2">
+    <div>{{transfer.iban}}</div>
+  </ion-col>
+  <ion-col>
+    <div>{{transfer.date|date}}</div>
+  </ion-col>
+  <ion-col>
+    <div>{{transfer.amount|currency:'EUR'}}</div>
+  </ion-col>
+  <ion-col>
+    <div>{{transfer.note}}</div>
+  </ion-col>
+  <!-- Options -->
+  <ion-col class="col ion-text-center" size="2">
+    <ion-button size="small" color="medium" [routerLink]="'/transfer/edit/' + transfer._id">
+      <ion-icon name="create-outline"></ion-icon>
+    </ion-button>
+    <ion-button color="danger" size="small" (click)="isModalOpen = true">
+      <ion-icon name="trash-outline"></ion-icon>
+    </ion-button>
+    <ion-modal [isOpen]="isModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Remove Transfer</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <h3>Are you sure?</h3>
+          <ion-button color="danger" (click)="findByIdAndRemove(transfer)" size="medium" class="ion-margin-end">
+            Yes, Remove it
+          </ion-button>
+          <ion-button color="medium" (click)="isModalOpen = false" size="medium" class="ion-margin-end">
+            No, Cancel it
+          </ion-button>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </ion-col>
+</ion-row>

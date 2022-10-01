@@ -1,27 +1,15 @@
-# TransferApp
+Work i did:
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.9.
+- Created a project with angular cli 13
+- Added Ionic package into my project
+- Implementd a Home component as a layout
+- Implemented a Transfer component then added into Home as a component
+- imported angular-iban package then added into an angular formControl
+- Validated field with Angular Validators
+- Formated the amount field with Angular currency package to EUR
+- Used Router to add-transfer and edit-transfer
+- Implemented services to gather transfers with Angular HTTP package from nodejs api
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Notice:
+    Because of my internet in Iran, I couldn't complete all my tasks as well as you want because from 4PM until 12PM our network has been lost... but I completed some of the tasks as well as I could.

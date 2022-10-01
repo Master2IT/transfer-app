@@ -12,7 +12,8 @@ export class HomeComponent implements OnInit {
   refresh(ev: any) {
     setTimeout(() => {
       ev.detail.complete();
-    }, 3000);
+      window.location.reload()
+    }, 1000);
   }
 
   ngOnInit(): void {

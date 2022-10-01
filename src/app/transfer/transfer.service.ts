@@ -1,44 +1,21 @@
+import { HttpClient, HttpHeaders } from  '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import Transfer from './transfer.interface'
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransferService {
-  constructor() {}
+  private url = 'http://localhost:3002/api/transfer/'
 
-  public headers: Array<string> = [
-    'Account holder',
-    'IBAN',
-    'Date',
-    'Amount',
-    'Note',
-  ];
+  constructor(private http: HttpClient) {}
 
-  public transfers: Transfer[] = [
-    {
-      id: 1,
-      account_holder: 'test',
-      iban: 'test',
-      amount: 10.99,
-      date: '1994/17/09',
-      note: 'test test test',
-    },
-    {
-      id: 1,
-      account_holder: 'test',
-      iban: 'test',
-      amount: 10.99,
-      date: '1994/17/09',
-      note: 'test test test',
-    },
-  ];
-
-  public getHeaders(): Array<string> {
-    return this.headers;
+  findAll(): Observable<Transfer[]> {
+    return this.http.get<Transfer[]>(this.url)
   }
-
-  public getTransfers(): Transfer[] {
-    return this.transfers;
+  
+  findByIdAndRemove(id: any): Observable<Transfer[]> {
+    return this.http.delete<Transfer[]>(this.url + id)
   }
 }

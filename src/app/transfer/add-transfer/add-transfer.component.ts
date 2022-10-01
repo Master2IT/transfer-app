@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import Transfer from '../transfer.interface'
-import { HttpClient } from '@angular/common/http';
-// import { Observable, throwError } from 'rxjs';
-// import { catchError, retry } from 'rxjs/operators';
-import { LoadingController } from '@ionic/angular';
+import { AddTransferService } from './add-transfer.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ValidatorService } from 'angular-iban';
+import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
+import Transfer from '../transfer.interface';
+
 
 @Component({
   selector: 'app-add-transfer',
@@ -11,62 +13,80 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./add-transfer.component.scss'],
 })
 export class AddTransferComponent implements OnInit {
-  constructor(private http: HttpClient, private loadingCtrl: LoadingController) {}
 
-  configUrl = 'assets/config.json';
+  public reactiveForm!: FormGroup;
 
-  getConfig() {
-    return this.http.get(this.configUrl);
-  }
+  public account_holder!: FormControl;
+  public iban!: FormControl;
+  public amount!: FormControl;
+  public date!: FormControl;
+  public note!: FormControl;
 
-  public form: Transfer = {
-    account_holder: '',
-    iban: '',
-    amount: 0,
-    date: '',
-    note: '',
-  };
+  constructor(
+    private fb: FormBuilder,
+    private transferService: AddTransferService,
+    private router: Router,
+    private toastController: ToastController
+  ) { }
 
   ngOnInit(): void {
-    this.getData();
+    this.iban = new FormControl(
+      null,
+      [
+        Validators.required,
+        ValidatorService.validateIban
+      ]
+    );
+    this.account_holder = new FormControl(null, [Validators.required]);
+    this.amount = new FormControl(1, [Validators.required]);
+    this.date = new FormControl(null, [Validators.required]);
+    this.note = new FormControl(null, [Validators.required]);
+
+    this.reactiveForm = this.fb.group({
+      account_holder: this.account_holder,
+      iban: this.iban,
+      amount: this.amount,
+      date: this.date,
+      note: this.note
+    });
   }
 
-  async loading(message?: string | null, dismiss?: boolean) {
-    let loading: any;
-    loading = await this.loadingCtrl.create({
-      message: message || 'Creating transfer...'
+  async showToast(message: string, color: string) {
+    if (!message) return;
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 3000,
+      position: 'bottom',
+      color
     });
 
-    if(dismiss){
-      loading.dismiss();
+    await toast.present();
+  }
+
+  submitForm() {
+    if(this.iban.errors?.['iban']){
+      this.showToast('IBAN is invalid', 'danger')
+      return;
     }
-
-    loading.present();
-  }
-
-  clearForm(){
-    this.form = {
-      account_holder: '',
-      iban: '',
-      amount: 0,
-      date: '',
-      note: '',
-    };
-  }
-
-  async getData() {
-    console.log(123);
-  }
-
-  async submitForm() {
-    this.loading()
-    try {
-      await this.http.post('/transfer/create', this.form).subscribe();
-      this.clearForm();
-      this.loading(null, true)
-    } catch (error) {
-      console.log(error);
-      this.loading(null, true)
+    const form: Transfer = {
+      account_holder: this.account_holder.value,
+      iban: this.iban.value,
+      amount: this.amount.value,
+      date: this.date.value,
+      note: this.note.value,
     }
+    this.transferService.submitForm(form).subscribe(
+      (res: any) => {
+        this.showToast(res.message, 'success')
+
+        setTimeout(() => {
+          this.router.navigate(['home'])
+        }, 1000);
+      },
+      (err) => {
+        this.showToast(err.error.message || err, 'danger')
+        console.log(err);
+      }
+    );
   }
 }

@@ -1,29 +1,45 @@
 <ion-header [translucent]="true">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/"></ion-back-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content [fullscreen]="true">
-    <ion-item>
-      <ion-icon name="person-circle" color="primary"></ion-icon>
-      <ion-label class="ion-text-wrap">
-        <h2>
-          123
-          <span class="date">
-            <ion-note>123</ion-note>
-          </span>
-        </h2>
-        <h3>To: <ion-note>Me</ion-note></h3>
-      </ion-label>
-    </ion-item>
-    
-    <div class="ion-padding">
-      <h1>123</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+      <h3>Edit Transfer</h3>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form (ngSubmit)="submitForm()" [formGroup]="reactiveForm" autocomplete="off" novalidate>
+    <ion-card>
+      <ion-item>
+        <ion-label position="floating">Account holder</ion-label>
+        <ion-input name="account_holder" formControlName="account_holder"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">IBAN</ion-label>
+        <ion-input name="iban" formControlName="iban"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label >Date</ion-label>
+        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime name="date" formControlName="date" locale="es-DE" presentation="date" id="datetime"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Amount</ion-label>
+        <ion-input name="amount" formControlName="amount"></ion-input>
+        <ion-badge slot="end" color="medium" class="ion-margin-top">{{amount.value|currency:'EUR'}}</ion-badge>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Note</ion-label>
+        <ion-textarea name="note" formControlName="note"></ion-textarea>
+      </ion-item>
+    </ion-card>
+
+    <div class="ion-margin">
+      <ion-button expand="full" type="submit">Update</ion-button>
     </div>
-  </ion-content>
+  </form>
+</ion-content>
