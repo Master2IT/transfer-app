@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <form (ngSubmit)="submitForm()" [formGroup]="reactiveForm" autocomplete="off" novalidate>
+  <form (ngSubmit)="createTransfer()" [formGroup]="reactiveForm" autocomplete="off" novalidate>
     <ion-card>
       <ion-item>
         <ion-label position="floating">Account holder</ion-label>

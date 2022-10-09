@@ -1,9 +1,9 @@
 interface Transfer {
-  _id?: string;
+  id?: string;
   account_holder: string;
   iban: string;
   amount: number;
-  date: string;
+  date: number;
   note: string;
 }
 
