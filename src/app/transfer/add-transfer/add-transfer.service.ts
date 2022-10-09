@@ -7,7 +7,7 @@ const headers = new HttpHeaders({
   'Content-Type': 'application/json' 
 });
 
-const url = 'http://localhost:5000/transfers'
+const url = 'http://localhost:3002/api/transfer'
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,8 @@ export class AddTransferService {
 
   constructor(private http: HttpClient) { }
 
-  createTransfer(form: Transfer): Observable<Transfer> {
+
+  submitForm(form: Transfer): Observable<Transfer> {
     return this.http.post<Transfer>(url, form, { headers }); 
   }
 }

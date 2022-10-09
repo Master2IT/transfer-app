@@ -7,7 +7,7 @@ import Transfer from './transfer.interface'
   providedIn: 'root',
 })
 export class TransferService {
-  private url = 'http://localhost:5000/transfers/'
+  private url = 'http://localhost:3002/api/transfer/'
 
   constructor(private http: HttpClient) {}
 

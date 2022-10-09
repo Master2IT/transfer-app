@@ -5,7 +5,6 @@ import { ValidatorService } from 'angular-iban';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import Transfer from '../transfer.interface';
-import { v4 as uuidv4 } from 'uuid';
 
 
 @Component({
@@ -64,20 +63,19 @@ export class AddTransferComponent implements OnInit {
     await toast.present();
   }
 
-  createTransfer() {
+  submitForm() {
     if(this.iban.errors?.['iban']){
       this.showToast('IBAN is invalid', 'danger')
       return;
     }
     const form: Transfer = {
-      id: uuidv4(),
       account_holder: this.account_holder.value,
       iban: this.iban.value,
       amount: this.amount.value,
       date: this.date.value,
       note: this.note.value,
     }
-    this.transferService.createTransfer(form).subscribe(
+    this.transferService.submitForm(form).subscribe(
       (res: any) => {
         this.showToast(res.message, 'success')
 
