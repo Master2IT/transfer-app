@@ -12,4 +12,4 @@ Work i did:
 
 
 Notice:
-    Because of my internet in Iran, I couldn't complete all my tasks as well as you want because from 4PM until 12PM our network has been lost and it's temporary... but I completed some of the tasks as well as I could. If you give me more time I can complete all tasks
+    Because of my internet in Iran, I couldn't complete all my tasks as well as you want because from 4PM until 12PM our network has been lost... but I completed some of the tasks as well as I could.
