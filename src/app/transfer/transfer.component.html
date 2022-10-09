@@ -1,5 +1,15 @@
-  <ion-card>
-    <ion-grid>
+  <ion-card *ngFor="let transfer of transfers;">
+      <ion-list *ngFor="let header of headers;">
+        <ion-item>
+          <ion-label *ngIf="header.text">
+            <h6 class="ion-bold">{{header.text}}: </h6>
+          </ion-label>
+          <ion-label slot="end">
+            <app-transfer-item (getAll)="getAll()" (showToast)="onShowToast($event)" item-key="i" [transfer]="transfer" [value]="header.value"></app-transfer-item>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    <!-- <ion-grid>
       <ion-row class="row">
         <ion-col size="2"
           *ngFor="let header of headers;">
@@ -12,5 +22,5 @@
       <div class="row" *ngFor="let transfer of transfers; let i = index">
         <app-transfer-item (getAll)="getAll()" (showToast)="onShowToast($event)" item-key="i" [transfer]="transfer"></app-transfer-item>
       </div>
-    </ion-grid>
+    </ion-grid> -->
   </ion-card>

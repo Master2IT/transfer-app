@@ -69,11 +69,11 @@ export class EditTransferComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id')
 
     this.transferService.findOne(id).subscribe((res: any) => {
-      this.account_holder.setValue(res.data.account_holder)
-      this.iban.setValue(res.data.iban)
-      this.date.setValue(res.data.date)
-      this.amount.setValue(res.data.amount)
-      this.note.setValue(res.data.note)
+      this.account_holder.setValue(res.account_holder)
+      this.iban.setValue(res.iban)
+      this.date.setValue(res.date)
+      this.amount.setValue(res.amount)
+      this.note.setValue(res.note)
     }, (err) => {
       this.showToast(err.error.message, 'danger')
       console.log(err);
