@@ -8,7 +8,7 @@ import Transfer from '../transfer.interface';
 })
 export class EditTransferService {
 
-  private url = 'http://localhost:5000/transfers/'
+  private url = 'http://localhost:3002/api/transfer/'
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json'
