@@ -1,18 +1,16 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
+import { RouterModule, Routes } from '@angular/router';
 import { AddTransferComponent } from './add-transfer.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AddTransferComponent
-  }
+    component: AddTransferComponent,
+  },
 ];
-
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AddTransferRoutingModule { }

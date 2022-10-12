@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { EditTransferService } from './edit-transfer.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidatorService } from 'angular-iban';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import Transfer from '../transfer.interface';
+import {Transfer} from '../transfer.interface';
+import { select, Store } from '@ngrx/store';
+import { selectTransferById } from '../store/transfer.selectors';
+import { switchMap } from 'rxjs';
+import { updateTransfer } from '../store/transfer.actions';
+import { AppState } from 'src/app/store/app.state';
+import { selectAppState } from 'src/app/store/app.selector';
+import { setAPIStatus } from 'src/app/store/app.action';
 
 @Component({
   selector: 'app-edit-transfer',
@@ -23,10 +29,11 @@ export class EditTransferComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private transferService: EditTransferService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private store: Store,
+    private appStore: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
@@ -66,18 +73,24 @@ export class EditTransferComponent implements OnInit {
   }
 
   findOne() {
-    const id = this.route.snapshot.paramMap.get('id')
+    const fetchFromData$ = this.route.paramMap.pipe(
+      switchMap(param => {
+        var id = String(param.get('id'));
+        return this.store.pipe(select(selectTransferById(id)))
+      })
+    )
 
-    this.transferService.findOne(id).subscribe((res: any) => {
-      this.account_holder.setValue(res.data.account_holder)
-      this.iban.setValue(res.data.iban)
-      this.date.setValue(res.data.date)
-      this.amount.setValue(res.data.amount)
-      this.note.setValue(res.data.note)
-    }, (err) => {
-      this.showToast(err.error.message, 'danger')
-      console.log(err);
-    });
+    fetchFromData$.subscribe((data: any) => {
+      if(data){
+        this.account_holder.setValue(data.account_holder)
+      this.iban.setValue(data.iban)
+      this.date.setValue(data.date)
+      this.amount.setValue(data.amount)
+      this.note.setValue(data.note)
+      }else{
+        this.router.navigate(['/transfer'])
+      }
+    })
   }
 
   submitForm() {
@@ -92,20 +105,20 @@ export class EditTransferComponent implements OnInit {
       date: this.date.value,
       note: this.note.value,
     }
-    const id = this.route.snapshot.paramMap.get('id')
-    this.transferService.submitForm(id, form).subscribe(
-      (res: any) => {
-        this.showToast('Successfully updated!', 'success')
 
+    const id = String(this.route.snapshot.paramMap.get('id'))
+    this.store.dispatch(updateTransfer({ id, payload: { ...form } }))
+
+    const appStatus$ = this.appStore.pipe(select(selectAppState))
+    appStatus$.subscribe(data => {
+      if (data.apiStatus === 'success') {
+        this.showToast(data.apiResponse || 'Updated Successfully!', 'success')
+        this.appStore.dispatch(setAPIStatus({ status: { apiStatus: '', apiResponse: '' } }))
         setTimeout(() => {
-          this.router.navigate(['home'])
+          this.router.navigate(['transfer'])
         }, 1000);
-      },
-      (err) => {
-        this.showToast(err.error.message, 'danger')
-        console.log(err);
       }
-    );
+    })
   }
 
 }

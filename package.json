@@ -1,6 +1,6 @@
 {
   "name": "transfer-app",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -19,6 +19,10 @@
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
     "@ionic/angular": "^6.2.9",
+    "@ionic/storage": "^3.0.6",
+    "@ngrx/effects": "^13.2.0",
+    "@ngrx/store": "^13.2.0",
+    "@ngrx/store-devtools": "^13.2.0",
     "angular-iban": "6",
     "iban": "^0.0.14",
     "rxjs": "~7.5.0",

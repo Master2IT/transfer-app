@@ -1,4 +1,4 @@
-interface Transfer {
+export interface Transfer {
   _id?: string;
   account_holder: string;
   iban: string;
@@ -7,4 +7,7 @@ interface Transfer {
   note: string;
 }
 
-export default Transfer
+export interface TransferState {
+  apiStatus: string;
+  apiResponse: string;
+}

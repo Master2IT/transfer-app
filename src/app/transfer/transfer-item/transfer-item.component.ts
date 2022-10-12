@@ -1,6 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TransferService } from '../transfer.service';
-import Transfer from '../transfer.interface';
+import {Transfer} from '../transfer.interface';
+import { select, Store } from '@ngrx/store';
+import { removeTransfer } from '../store/transfer.actions';
+import { selectAppState } from 'src/app/store/app.selector';
+import { AppState } from 'src/app/store/app.state';
+import { setAPIStatus } from 'src/app/store/app.action';
+// import { RemoveTransfer } from 'src/app/state/transfers/transfer.actions';
 
 @Component({
   selector: 'app-transfer-item',
@@ -19,22 +25,21 @@ export class TransferItemComponent implements OnInit {
   }
 
 
-  constructor(private transferService: TransferService) { }
+  constructor(private store: Store, private appStore: Store<AppState>) { }
 
   ngOnInit(): void {
   }
 
   findByIdAndRemove({_id}: any){
-    this.transferService.findByIdAndRemove(_id).subscribe((res: any)=>{
-      this.isModalOpen = false;
-      this.getAll.emit();
-    }, (err)=>{
-      this.showToast.emit({
-        message: err.error.message, 
-        color: 'danger'
-      })
-      console.log(err);
+    this.store.dispatch(removeTransfer({ id: _id }))
+
+    const appStatus$ = this.appStore.pipe(select(selectAppState))
+    appStatus$.subscribe(data => {
+      if (data.apiStatus === 'success') {
+        this.appStore.dispatch(setAPIStatus({ status: { apiStatus: '', apiResponse: '' } }))
+        this.isModalOpen = false;
+        this.getAll.emit();
+      }
     })
   }
-
 }

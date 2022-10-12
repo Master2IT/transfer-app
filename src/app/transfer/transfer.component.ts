@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { TransferService } from './transfer.service';
+import { Component, OnInit } from '@angular/core'
+import { select, Store } from '@ngrx/store';
 import { ToastController } from '@ionic/angular';
-import Transfer from './transfer.interface';
 import { Router, Event, NavigationEnd } from '@angular/router';
+import { loadTransfers } from './store/transfer.actions';
+import { selectTransfers } from './store/transfer.selectors';
 
 @Component({
   selector: 'app-transfer',
@@ -11,8 +12,22 @@ import { Router, Event, NavigationEnd } from '@angular/router';
 })
 export class TransferComponent implements OnInit {
 
-  transfers: Transfer[] = []
+  transfers$ = this.store.pipe(select(selectTransfers))
   currentRoute: string
+
+  constructor(private toastController: ToastController, private router: Router, private store: Store) {
+    this.currentRoute = ""
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd) {
+        // Hide progress spinner or progress bar
+        this.currentRoute = event.url;
+        if (this.currentRoute == '/transfer') this.getAll()
+      }
+
+    })
+  }
+
+  
 
   public headers: Array<string> = [
     'Account holder',
@@ -22,21 +37,16 @@ export class TransferComponent implements OnInit {
     'Note',
   ];
 
-  constructor(private transferService: TransferService, private toastController: ToastController, private router: Router) {
-    this.currentRoute = ""
-    this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationEnd) {
-        // Hide progress spinner or progress bar
-        this.currentRoute = event.url;          
-        if(this.currentRoute == '/home') this.getAll()
-      }
-
-    })
-   }
-
   ngOnInit(): void {}
 
-  onShowToast({message, color}: any){
+  refresh(ev: any) {
+    setTimeout(() => {
+      ev.detail.complete();
+      this.store.dispatch(loadTransfers())
+    }, 1000);
+  }
+
+  onShowToast({ message, color }: any) {
     this.showToast(message, color)
   }
 
@@ -53,12 +63,7 @@ export class TransferComponent implements OnInit {
   }
 
   getAll() {
-    this.transferService.findAll().subscribe((res: any) => {  
-      this.transfers = res.data
-    }, (err) => {
-      this.showToast(err.error.message, 'danger')
-      console.log(err);
-    });
+    this.store.dispatch(loadTransfers())
   }
 
 }
