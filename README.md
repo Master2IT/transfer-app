@@ -10,8 +10,3 @@ Work I did:
 - Validated field with Angular Validators
 - Formated the amount field with Angular currency package to EUR
 - Implemented services to gather transfers with Angular HTTP package from nodejs api and save into NgRx
-
-
-Notice:
-    - Because of my internet in Iran, I couldn't complete all my tasks as well as you want because from 4PM until 12PM our network has been lost... but I completed some of the tasks as well as I could.
-    - I Updated the project with NgRx now. But not in the time you wanted
